@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Arrays;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MyCollections {
     private static final String RED_COLOR = "\033[1;31m";
@@ -16,13 +18,12 @@ public class MyCollections {
     private static final Collection<Integer> treeSet = new TreeSet<>();
 
 
-    public static void mergeTwoCollections() {
+    public static void mergeTwoCollectionsUsingHashSet() {
         if (arrayList.isEmpty() || hashSet.isEmpty()) {
             System.out.println("Error: First of all call init methods for ArrayList and HashSet\n");
             return;
         }
         hashSet.addAll(arrayList);
-        printResult(hashSet, "HashSet after merging with ArrayList", RED_COLOR);
         arrayList.clear();
     }
 
@@ -32,37 +33,52 @@ public class MyCollections {
             return;
         }
         /**
-         * First solution via Arrays.class
+         * Second solution via Arrays.class
          */
         Object[] newArray = hashSet.toArray();
         Arrays.sort(newArray);
         printResult(newArray);
 
         /**
-         * Second solution via TreeSet.class
+         * Third solution via TreeSet.class
          */
         treeSet.addAll(hashSet);
-        printResult(treeSet, "Solution #2: TreeSet after instantiation", GREEN_COLOR);
+        printResult(treeSet, "Solution #3: TreeSet after instantiation", GREEN_COLOR);
+    }
+
+    /**
+     * First solution using Stream interface
+     */
+    public static void mergeAndSortUsingStream() {
+        if (arrayList.isEmpty() || hashSet.isEmpty()) {
+            System.out.println("Error: First of all call init methods for ArrayList and HashSet\n");
+            return;
+        }
+        Stream<Integer> stream1 = hashSet.stream();
+        Stream<Integer> stream2 = arrayList.stream();
+        List<Integer> finalResult = Stream.concat(stream1, stream2).distinct().sorted().collect(Collectors.toList());
+        printResult(finalResult, "Solution #1: New List using Streams", GREEN_COLOR);
     }
 
 
     /**
      * Overloaded Print Methods
      */
-    private static void printResult(Collection<Integer> collection, String comment, String color) {
+    public static void printResult(Collection<Integer> collection, String comment, String color) {
         System.out.println(color + comment + ", size=" + collection.size() + "\033[0m");
-        for (Integer element : collection) {
-            System.out.print(element + " ");
-        }
-        System.out.println('\n');
+        System.out.println(collection);
+        System.out.println();
     }
 
     private static void printResult(Object[] array) {
-        System.out.println("\033[1;32mSolution #1: New array after sorting, size=" + array.length + "\033[0m");
-        for (Object i : array) {
-            System.out.print(i + " ");
+        System.out.println("\033[1;32mSolution #2: New array after sorting, size=" + array.length + "\033[0m");
+        System.out.print("[");
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i]);
+            if (i != array.length-1)
+                System.out.print(", ");
         }
-        System.out.println('\n');
+        System.out.println("]\n");
     }
 
     /**
