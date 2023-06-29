@@ -10,7 +10,10 @@ public class Main {
 
         MyCollections.initOfHashSetByValues();
         MyCollections.initOfArrayListByRandomValues();
-        MyCollections.mergeTwoCollections();
+
+        MyCollections.mergeAndSortUsingStream();
+
+        MyCollections.mergeTwoCollectionsUsingHashSet();
         MyCollections.sortHashSetAfterMerging();
     }
 }
